@@ -1,12 +1,17 @@
-﻿using Calculator;
+﻿using CalculatorLibrary;
+
+
 
 double num1 = 0;
 double num2 = 0;
+var calculations = new List<double>();
 
 bool endApp = false;
 
 Console.WriteLine("Console Calculator in C#\r");
 Console.WriteLine("-----------------------\n");
+
+Calculator calculator = new Calculator();
 
 while (!endApp) {
 
@@ -24,25 +29,33 @@ while (!endApp) {
     num2 = CheckValidity(Console.ReadLine());
 
     Console.WriteLine("Choose an option from the following list:");
+    Console.WriteLine($"So far, there have been {calculations.Count} calculations made in this session.");
     Console.WriteLine
     ($@"a - Add
 s - Subtract
 m - Multiply
 d - Divide
+del - delete past calculations
+rep - replace the second number with the last calculation
 Your option?");
+
 
     string op = Console.ReadLine();
 
-    try {
-        result = Calculator.Calculator.DoOperation(num1, num2, op);
-        if (double.IsNaN(result)) {
-            Console.WriteLine("This operation will result in error\n");
+    while (op == "del" || op == "rep") {
+
+        if (op == "rep") {
+            num2 = ReplaceNumber(calculations, num2);
         } else {
-            Console.WriteLine("Your result: {0:0.##}\n", result);
+            ClearCalculationList(calculations);
         }
-    } catch (Exception ex) {
-        Console.WriteLine("An error ocurred");
+
+        op = Console.ReadLine();
     }
+
+
+    result = PerformOperation(num1, num2, calculations, calculator, result, op);
+
 
     Console.WriteLine("--------------\n");
 
@@ -51,6 +64,7 @@ Your option?");
 
     Console.WriteLine("\n");
 }
+calculator.Finish();
 return;
 
 
@@ -62,4 +76,37 @@ double CheckValidity( string? v ) {
     }
 
     return Convert.ToDouble(v);
+}
+
+static double PerformOperation( double num1, double num2, List<double> calculations, Calculator calculator, double result, string op ) {
+    try {
+        result = calculator.DoOperation(num1, num2, op);
+        if (double.IsNaN(result)) {
+            Console.WriteLine("This operation will result in error\n");
+        } else {
+            Console.WriteLine("Your result: {0:0.##}\n", result);
+            calculations.Add(result);
+        }
+    } catch (Exception ex) {
+        Console.WriteLine("An error ocurred");
+    }
+
+    return result;
+}
+
+static double ReplaceNumber( List<double> calculations, double secondNumber ) {
+    if (calculations.Count == 0) {
+        Console.WriteLine("There are no calculations saved. Perform a calculation first");
+        return secondNumber;
+    } else {
+        Console.WriteLine($"Num 2 changed to {calculations.Last()}! Please make a selection for operation now");
+        return calculations.Last();
+
+    }
+
+}
+
+static void ClearCalculationList( List<double> calculations ) {
+    calculations.Clear();
+    Console.WriteLine("List of calculations cleared");
 }
