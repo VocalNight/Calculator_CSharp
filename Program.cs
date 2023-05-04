@@ -1,7 +1,5 @@
 ﻿using CalculatorLibrary;
 
-
-
 double num1 = 0;
 double num2 = 0;
 var calculations = new List<double>();
@@ -15,11 +13,7 @@ Calculator calculator = new Calculator();
 
 while (!endApp) {
 
-    string numInput1 = "";
-    string numInput2 = "";
     double result = 0;
-
-
 
     Console.WriteLine("Type a number, and then press Enter");
 
@@ -53,9 +47,7 @@ Your option?");
         op = Console.ReadLine();
     }
 
-
-    result = PerformOperation(num1, num2, calculations, calculator, result, op);
-
+    PerformOperation(num1, num2, calculations, calculator, result, op);
 
     Console.WriteLine("--------------\n");
 
@@ -101,9 +93,7 @@ static double ReplaceNumber( List<double> calculations, double secondNumber ) {
     } else {
         Console.WriteLine($"Num 2 changed to {calculations.Last()}! Please make a selection for operation now");
         return calculations.Last();
-
     }
-
 }
 
 static void ClearCalculationList( List<double> calculations ) {
