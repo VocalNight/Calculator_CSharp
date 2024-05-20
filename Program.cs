@@ -22,13 +22,17 @@ while (!endApp) {
     Console.WriteLine("Type another number and then press Enter");
     num2 = CheckValidity(Console.ReadLine());
 
+    Console.Clear();
+
     Console.WriteLine("Choose an option from the following list:");
+    Console.WriteLine("Keep in mind that for the square root, the first number inserted will be used!");
     Console.WriteLine($"So far, there have been {calculations.Count} calculations made in this session.");
     Console.WriteLine
     ($@"a - Add
 s - Subtract
 m - Multiply
 d - Divide
+sqrt - Calculate Square root
 del - delete past calculations
 rep - replace the second number with the last calculation
 Your option?");
@@ -71,6 +75,8 @@ double CheckValidity( string? v ) {
 }
 
 static double PerformOperation( double num1, double num2, List<double> calculations, Calculator calculator, double result, string op ) {
+    Console.Clear();
+
     try {
         result = calculator.DoOperation(num1, num2, op);
         if (double.IsNaN(result)) {
